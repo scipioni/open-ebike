@@ -31,12 +31,7 @@ Battery::Battery(float k, uint16_t minVoltage, uint16_t maxVoltage, uint8_t sens
 	this->minVoltage = minVoltage;
 	this->maxVoltage = maxVoltage;
 	analogReadResolution(9); // 9 bit for max 511
-
-#if LATCH_MODE == CHANNEL_N
 	pinMode(sensePin, INPUT_PULLUP); // analogRead attaches the pin to ADC channel, which remaps it off the PU circuit. You have to set the mode back to INPUT_PULLUP after the read,
-#else
-	pinMode(POWER_BUTTON_PIN, INPUT_PULLUP);
-#endif
 
 	voltage_mean = 0;
 	current_sample = 0;
@@ -76,7 +71,16 @@ bool Battery::button()
 {
 	if (!power)
 		return false;
-	return button_pressed > 1;
+	return button_pressed >= 2;
+}
+
+bool Battery::wifi()
+{
+	if (wifi_enabled <= 0) {
+		wifi_enabled = 1;
+		return true;
+	}
+	return false;
 }
 
 void Battery::debug()
@@ -102,6 +106,7 @@ uint16_t Battery::voltage()
 	if (voltage_last < V_BUTTON_TRIGGER)
 	{
 		button_pressed++;
+		wifi_enabled--;
 		return voltage_mean; // non sporchiamo le medie
 	}
 	else

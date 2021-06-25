@@ -5,12 +5,10 @@
 
 #include <Arduino.h>
 
-#define V_SAMPLE 30 // how many values use for mean value
+#define V_SAMPLE 30			 // how many values use for mean value
 #define V_POLL_INTERVAL 1000 //
 #define V_BUTTON_TRIGGER 150
 #define POWER_BUTTON_DELAY 2000 // ms
-#define LATCH_MODE CHANNEL_N
-
 //#define DEBUG_BATTERY
 
 typedef uint8_t (*mapFn_t)(uint16_t, uint16_t, uint16_t);
@@ -55,13 +53,16 @@ public:
 	uint16_t voltage();
 
 	bool button();
+	bool wifi();
 	void debug();
 
 	uint16_t voltage_last;
 	uint8_t button_pressed;
 	uint16_t voltage_pin_mean;
-    bool power = true;
+	bool power = true;
+
 private:
+	uint8_t wifi_enabled = 3;
 	uint16_t minVoltage;
 	uint16_t maxVoltage;
 	float k;
@@ -123,4 +124,4 @@ static inline uint8_t linear(uint16_t voltage, uint16_t minVoltage, uint16_t max
 }
 #endif // BATTERY_H_
 
- extern Battery battery;
+extern Battery battery;

@@ -5,6 +5,10 @@
 #include "led.h"
 #include "buzzer.h"
 
+#if OTA_ENABLED == 1
+#include "ota.h"
+#endif
+
 #define BLE_NOTIFY_INTERVAL 1000
 
 Bike bike = Bike();
@@ -33,9 +37,9 @@ void Bike::poweroff()
 {
     battery.power = false;
     led_interval = BLINK_FAST;
-    Serial.printf("power off, bye...");
     buzzer_on();
     delay(1000);
+    Serial.printf("power off, bye...");
     pinMode(BUTTON_PIN, INPUT_PULLDOWN);
 }
 
@@ -51,4 +55,13 @@ void Bike::notify_task(void *parameter) // static
         bike.notify();
         delay(BLE_NOTIFY_INTERVAL);
     }
+}
+
+void Bike::wifi_on()
+{
+    Serial.println("power on wifi");
+    buzzer_play(2);
+#if OTA_ENABLED == 1
+    ota_setup();
+#endif
 }

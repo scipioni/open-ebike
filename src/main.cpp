@@ -13,5 +13,14 @@ void loop()
   {
     bike.poweroff();
   }
+
+#if OTA_ENABLED == 1
+  if (battery.wifi()) {
+    bike.wifi_on();
+  }
+  
+  ota_handle();
+#endif
+
   delay(1000);
 }
