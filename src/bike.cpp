@@ -28,7 +28,7 @@ void Bike::setup()
     xTaskCreatePinnedToCore(this->notify_task, "notify", 10500, NULL, 5, NULL, ARDUINO_RUNNING_CORE);
 
 #if CANBUS_ENABLE == 1
-    delay(500); // to avoid brownout
+    delay(CANBUS_START_DELAY); // to avoid brownout
     canbus_setup();
 #endif
 }
@@ -38,7 +38,7 @@ void Bike::poweroff()
     battery.power = false;
     led_interval = BLINK_FAST;
     buzzer_on();
-    delay(1000);
+    delay(500);
     Serial.printf("power off, bye...");
     pinMode(BUTTON_PIN, INPUT_PULLDOWN);
 }

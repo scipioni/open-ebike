@@ -5,7 +5,7 @@ QueueHandle_t xQueueBuzzer = NULL;
 
 void buzzer_play(int count)
 {
-    ESP_LOGI(LOG_TAG, "buzzer %d", count);
+    Serial.printf("buzzer %d\n", count);
     xQueueSend(xQueueBuzzer, &count, pdMS_TO_TICKS(1));
 }
 

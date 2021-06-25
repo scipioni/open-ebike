@@ -6,6 +6,7 @@
 #define CANBUS_ENABLE 1
 #define CANBUS_TX_PIN 23
 #define CANBUS_RX_PIN 19
+#define CANBUS_START_DELAY 100 // to avoid brownout
 #define LOG_TAG "canbus"
 
 typedef struct TX_FRAME
