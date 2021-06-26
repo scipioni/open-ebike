@@ -174,7 +174,7 @@ void canbus_receive_task(void *pvParameter)
             {
               if (rx_frame.data.u8[4] == tx_assistances[i].message.data.u8[4])
               {
-                ESP_LOGI(LOG_TAG, "power changing from %x to %x", tx_assistance->message.data.u8[4], rx_frame.data.u8[4]);
+                Serial.printf("power changing from %x to %x\n", tx_assistance->message.data.u8[4], rx_frame.data.u8[4]);
 
                 xSemaphoreTake(xSemaphoreTx, portMAX_DELAY);
                 tx_assistance = &tx_assistances[i];

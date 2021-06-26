@@ -5,7 +5,7 @@ QueueHandle_t xQueueBuzzer = NULL;
 
 void buzzer_play(int count)
 {
-    //ESP_LOGI(LOG_TAG, "buzzer %d", count);
+    Serial.printf("buzzer %d\n", count);
     xQueueSend(xQueueBuzzer, &count, pdMS_TO_TICKS(1));
 }
 
@@ -23,7 +23,7 @@ void buzzer_task(void *parameter)
 
         xQueueReceive(xQueueBuzzer, &count, portMAX_DELAY);
         buff = count;
-        while (buff--)
+        while (buff-- > 0)
         {
             digitalWrite(BUZZER_PIN, HIGH); // buzzer acceso
             vTaskDelay(pdMS_TO_TICKS(50));
