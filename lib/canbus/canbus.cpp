@@ -12,6 +12,8 @@ PLEVELS powers[3] = {
 
 SETTINGS settings = {.running = true, .motor_is_alive = false, .initial_assistance = 0};
 
+onMotorAlive_t onMotorAlive;
+
 //QueueHandle_t xQueueBuzzer = NULL;
 #define MESSAGES_OUT 4
 TX_FRAME messages_out[MESSAGES_OUT];
@@ -140,8 +142,15 @@ void canbus_receive_task(void *pvParameter)
   {
     if (xQueueReceive(CAN_cfg.rx_queue, &rx_frame, portMAX_DELAY) == pdTRUE)
     {
+      // TODO, find canbus code for bike speed and raise onMotorAlive if greater than zero
+      // if (rx_frame.MsgID == 0x???)
+      // {
+      //   (*onMotorAlive)();
+      // }
+
       if (rx_frame.MsgID == 0x454) // dal motore 0x454 o dalla batteria 0x300)
       {
+        (*onMotorAlive)(); // TODO, delete from here and enable upper section to detect bike speed
         if (!motor_is_alive)
         {
           motor_is_alive = true;
@@ -189,8 +198,15 @@ void canbus_receive_task(void *pvParameter)
   }
 }
 
-void canbus_setup()
+void dummy(void)
 {
+  ;
+}
+
+void canbus_setup(onMotorAlive_t _onMotorAlive)
+{
+  onMotorAlive = _onMotorAlive ? _onMotorAlive : &dummy;
+
   CAN_cfg.speed = CAN_SPEED_250KBPS;
   CAN_cfg.tx_pin_id = (gpio_num_t)CANBUS_TX_PIN;
   CAN_cfg.rx_pin_id = (gpio_num_t)CANBUS_RX_PIN;

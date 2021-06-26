@@ -130,7 +130,9 @@ uint16_t Battery::voltage()
 		return 0;
 
 	voltage_pin_mean = tot / samples_valid;	   // 9 bit resolution 512-1
-	voltage_mean = this->k * voltage_pin_mean; // 9 bit resolution 512-1
+	uint16_t v = this->k * voltage_pin_mean; // 9 bit resolution 512-1
+	is_charging = v > voltage_mean;
+	voltage_mean = v;
 
 	return voltage_mean;
 }

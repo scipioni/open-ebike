@@ -31,4 +31,7 @@ typedef struct SETTINGS
     int initial_assistance;
 } SETTINGS;
 
-void canbus_setup();
+typedef void(*onMotorAlive_t)(void);
+
+
+void canbus_setup(onMotorAlive_t _onMotorAlive = 0);

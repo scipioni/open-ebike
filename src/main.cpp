@@ -9,16 +9,22 @@ void setup()
 
 void loop()
 {
-  if (battery.button())
+  if (battery.is_charging)
+  {
+    bike.is_active();
+  }
+
+  if (battery.button() || bike.idle())
   {
     bike.poweroff();
   }
 
 #if OTA_ENABLED == 1
-  if (battery.wifi()) {
+  if (battery.wifi())
+  {
     bike.wifi_on();
   }
-  
+
   ota_handle();
 #endif
 

@@ -1,0 +1,25 @@
+
+0.201277  300  03 5A 0B 5A 23 00 23    .Z.Z#.#
+0.200614  400  01 00 0C 00             ....
+0.200479  401  85 A0 00 00 00 00 00 00 ........
+0.000000  402  5D 00 00 00 F0 AC 05 00 ].......
+0.000000  403  5C 00 00 00 D4 0D 06 00 \.......
+
+
+# cambia solo il 401
+0.000000  401  97 A0 00 00 00 00 00 00 ........
+
+
+# il 300,400 e 401 vengono mandati ciclicamente ogni 0.1 secondi 
+
+# il 403 viene mandato una sola volta
+# il 402 viene mandato una sola volta
+
+# assistenza 35 35 (0x23 0x23 )
+300  03 5A 0B 5A 23 00 23
+
+# assistenza 40 100 (0x28 0x64 )
+300  03 5A 0B 5A 28 00 64
+
+# assistenza 100 100 (0x64 0x64 )
+300  03 5A 0B 5A 64 00 64

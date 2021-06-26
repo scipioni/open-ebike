@@ -15,6 +15,8 @@
 #define BATTERY_V_MAX_mV 42000
 #define BATTERY_K 40850 / 288 // empiric: V_battery_mV/mean_pin
 
+#define IDLE_OFF 300000 // in ms
+
 #include <Arduino.h>
 #include <BLEDevice.h>
 #include <BLEServer.h>
@@ -30,7 +32,9 @@
 class Bike : public BLE
 {
 private:
+
 public:
+    unsigned long motor_seen = 0;
     Bike();
 
     void setup();
@@ -38,6 +42,8 @@ public:
     void notify();
     void poweroff();
     void wifi_on();
+    bool idle();
+    void is_active();
 };
 
 extern Bike bike;

@@ -14,6 +14,12 @@
 Bike bike = Bike();
 Battery battery = Battery(BATTERY_K, BATTERY_V_MIN_mV, BATTERY_V_MAX_mV, BUTTON_PIN);
 
+void on_motor()
+{
+    bike.is_active();
+}
+
+
 Bike::Bike()
 {
     ;
@@ -25,11 +31,13 @@ void Bike::setup()
     buzzer_setup();
     setup_ble();
 
+    on_motor(); // reset bike.motor_seen
+
     xTaskCreatePinnedToCore(this->notify_task, "notify", 10500, NULL, 5, NULL, ARDUINO_RUNNING_CORE);
 
 #if CANBUS_ENABLE == 1
     delay(500); // to avoid brownout
-    canbus_setup();
+    canbus_setup(&on_motor);
 #endif
 }
 
@@ -57,6 +65,10 @@ void Bike::notify_task(void *parameter) // static
     }
 }
 
+bool Bike::idle() {
+    return (millis() - motor_seen) > IDLE_OFF;
+}
+
 void Bike::wifi_on()
 {
     Serial.println("power on wifi");
@@ -65,3 +77,8 @@ void Bike::wifi_on()
     ota_setup();
 #endif
 }
+
+void Bike::is_active() {
+    motor_seen = millis();
+}
+

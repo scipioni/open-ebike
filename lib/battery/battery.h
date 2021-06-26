@@ -60,6 +60,7 @@ public:
 	uint8_t button_pressed;
 	uint16_t voltage_pin_mean;
 	bool power = true;
+	bool is_charging = false;
 
 private:
 	uint8_t wifi_enabled = 3;
